@@ -35,7 +35,7 @@
 				<!-- Events list -->
 				<div class="agenda-events agenda-day{{$i+1}}">
 					<div class="agenda-header">
-						{{date('Y-m-d', strtotime("+$i day", strtotime($startDate)))}} {{date("l",strtotime(date('Y-m-d', strtotime("+$i day", strtotime($startDate)))))}}
+						{{date("l",strtotime(date('Y-m-d', strtotime("+$i day", strtotime($startDate)))))}} {{date('F', strtotime("+$i day", strtotime($startDate)))}} {{date('d', strtotime("+$i day", strtotime($startDate)))}}, {{date('Y', strtotime("+$i day", strtotime($startDate)))}}
 					</div>
 					@for ($n = 7; $n < 20; $n++)
 						<a href="/appointments/create/{{date('Y-m-d', strtotime("+$i day", strtotime($startDate)))}}/{{$n}}/0">	
@@ -43,6 +43,7 @@
 								<time>{{$n}} - {{$n+1}}</time>
 								Create Appt
 							</span>
+						</a>
 					@endfor
 
 

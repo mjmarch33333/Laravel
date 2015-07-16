@@ -18,8 +18,9 @@ Route::get('home','HomeController@index');
 
 // Appointment Routes
 Route::get('appointments','AppointmentController@index');
-Route::get('appointments/create/{date}/{hour}/{minute}','AppointmentController@getCreate');
-Route::post('appointments/create','AppointmentController@store');
+Route::get('appointments/create/{date}/{hour}/{minute}','AppointmentController@getUserSchedule');
+Route::post('appointments/create/{date}/{hour}/{minute}','AppointmentController@getCreate');
+Route::post('appointments/store/{user}','AppointmentController@store');
 Route::get('appointments/viewall', 'AppointmentController@viewAll');
 Route::get('appointments/showbyuser/{id}', 'AppointmentController@viewByUser');
 Route::get('appointments/showbydate/{date}', 'AppointmentController@viewByDate');

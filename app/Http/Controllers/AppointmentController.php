@@ -116,18 +116,30 @@ class AppointmentController extends Controller
      *
      * @return Response
      */
-    public function getCreate($date, $hour, $minute, $user)
+    public function getCreate($date, $hour, $minute)
     {
         $admin = \Auth::user()->admin_site_id;
         if ($admin < 1)
         {
              return redirect('home');
         }
+        $input = Request::all();
         $apptpeople = DB::table('users')
             ->where('users.schedule_site_id', '>', '0') 
             ->get();
 
-        return view('appointments.create', compact('apptpeople'));
+        $apptuser = DB::table('users')
+            ->where('users.id', '=', $input['appt_for_id']) 
+            ->first();
+
+        
+        $data = [];
+        $data['date'] = $date;
+        $data['hour'] = $hour;
+        $data['minute'] = $minute;
+        $data['userid'] = $input['appt_for_id'];
+        $data['name'] = $apptuser->name;
+        return view('appointments.create', compact('apptpeople'), $data);
     }
 
     public function getUserSchedule($date, $hour, $minute)
@@ -138,13 +150,15 @@ class AppointmentController extends Controller
              return redirect('home');
         }
         $apptpeople = DB::table('users')->get();
-        $appointment['date'] = $date;
-        $appointment['hour'] = $hour;
-        $appointment['minute'] = $minute;
-        return view('appointments.selectuser', compact('appointment'), compact('apptpeople'));
+        $data = [];
+        $data['date'] = $date;
+        $data['hour'] = $hour;
+        $data['minute'] = $minute;
+
+        return view('appointments.selectuser', compact('apptpeople'), $data);
     }
 
-    public function store() 
+    public function store($idtoupdate) 
     {
         $admin = \Auth::user()->admin_site_id;
         if ($admin < 1)
@@ -159,13 +173,16 @@ class AppointmentController extends Controller
             ->where('users.id', '=', $input['appt_with_id']) 
             ->get();
 
-        $input['user_id'] = 2;
+        $input['user_id'] = $idtoupdate;
         $input['site_id'] = 1;
+        $totalminutes = ($input['appt_start_hour']*60) + $input['appt_start_minute'] + $input['duration'];
+        $input['appt_end_hour'] = intval($totalminutes / 60);
+        $input['appt_end_minute'] =  $totalminutes % 60;
         $input['appt_with'] = $appt_with_name[0]->name;
- 
+
         Appointment::create($input);
 
-        return redirect('appointments');
+        return redirect("appointments/showbydate/" . $input['appt_date']);
     }
 
     public function edit($id)
@@ -219,10 +236,8 @@ class AppointmentController extends Controller
                 'sms_1hour' => $input['sms_1hour'],
                 'sms_1day' => $input['sms_1day']
                 ]);
- 
-        //Appointment::update($input);
 
-        return redirect('appointments/viewall');
+         return redirect("appointments/showbydate/" . $input['appt_date']);
     }
 
     public function test($date) 
