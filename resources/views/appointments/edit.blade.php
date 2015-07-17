@@ -114,21 +114,21 @@
         <span class="label">1 Hour SMS/Text Reminder</span>
         <span class="button-group">
             @if ($appointment->sms_1hour == 1)
-                <label for="button-radio-1" class="button green-active">
-                    <input type="radio" name="sms_1hour" id="button-radio-1" value="1" checked>
+                <label for="button-radio-3" class="button green-active">
+                    <input type="radio" name="sms_1hour" id="button-radio-3" value="1" checked>
                        Yes
                 </label>
-                <label for="button-radio-2" class="button green-active">
-                    <input type="radio" name="sms_1hour" id="button-radio-2" value="0">
+                <label for="button-radio-4" class="button green-active">
+                    <input type="radio" name="sms_1hour" id="button-radio-4" value="0">
                         No
                 </label>
             @else
-                <label for="button-radio-1" class="button green-active">
-                    <input type="radio" name="sms_1hour" id="button-radio-1" value="1">
+                <label for="button-radio-3" class="button green-active">
+                    <input type="radio" name="sms_1hour" id="button-radio-3" value="1">
                        Yes
                 </label>
-                <label for="button-radio-2" class="button green-active">
-                    <input type="radio" name="sms_1hour" id="button-radio-2" value="0" checked>
+                <label for="button-radio-4" class="button green-active">
+                    <input type="radio" name="sms_1hour" id="button-radio-4" value="0" checked>
                         No
                 </label>
             @endif

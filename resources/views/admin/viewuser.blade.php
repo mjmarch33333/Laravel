@@ -51,20 +51,20 @@
     <span class="label">Available to Schedule</span>
     <span class="button-group">
             @if ($users[0]->schedule_site_id > 0)
-            <label for="button-radio-1" class="button green-active">
-                <input type="radio" name="schedule_site_id" id="button-radio-1" value="1" checked>
+            <label for="button-radio-3" class="button green-active">
+                <input type="radio" name="schedule_site_id" id="button-radio-3" value="1" checked>
                    Yes
             </label>
-            <label for="button-radio-2" class="button green-active">
-                <input type="radio" name="schedule_site_id" id="button-radio-2" value="0">                        No
+            <label for="button-radio-4" class="button green-active">
+                <input type="radio" name="schedule_site_id" id="button-radio-4" value="0">                        No
             </label>
         @else
-            <label for="button-radio-1" class="button green-active">
-                <input type="radio" name="schedule_site_id" id="button-radio-1" value="1">
+            <label for="button-radio-3" class="button green-active">
+                <input type="radio" name="schedule_site_id" id="button-radio-3" value="1">
                     Yes
             </label>
-            <label for="button-radio-2" class="button green-active">
-                <input type="radio" name="schedule_site_id" id="button-radio-2" value="0" checked>
+            <label for="button-radio-4" class="button green-active">
+                <input type="radio" name="schedule_site_id" id="button-radio-4" value="0" checked>
                     No
             </label>
         @endif

@@ -105,7 +105,7 @@
 
 		<hgroup id="main-title" class="thin">
 			<h1>@yield('title')</h1>
-			<h2>Today is {{date("l")}} <strong>{{ date("F") }} {{ date("d") }}, {{ date("Y") }}</strong></h2>
+			<h2>{{date("h:i:sa")}} Today is {{date("l")}} <strong>{{ date("F") }} {{ date("d") }}, {{ date("Y") }}</strong></h2>
 		</hgroup>
 
 		<div class="with-padding">
@@ -179,12 +179,16 @@
 		<!-- End content wrapper -->
 
 		<!-- This is optional -->
+		<ul class="big-menu">
+			<li><a href="/appointments/create">Create Appointment</a></li>
+			<li><a href="/appointments/viewall">All Appointments</a></li>
+			<li><a href="/admin/viewallusers">All Users</a></li>
+			<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}">Today's Appointments</a></li>
+			<li><a href="/auth/logout" title="Logout">Logout</a></li>
+		</ul>
+
+
 		<footer id="menu-footer">
-			<a href="/appointments/create">Create Appointment</a><br>
-			<a href="/appointments/viewall">All Appointments</a><br>
-			<a href="/admin/viewallusers">All Users</a><br>
-			<a href="/appointments/showbydate/{{ date('Y-m-d') }}">Today's Appointments</a><br>
-			<a href="/auth/logout" title="Logout">Logout</a>
 		</footer>
 
 	</section>

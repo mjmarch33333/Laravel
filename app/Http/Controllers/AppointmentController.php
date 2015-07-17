@@ -75,17 +75,35 @@ class AppointmentController extends Controller
         {
             if($count<2)
             {
+                //$intervalappt = DB::table('appointments')
+                //    ->where('appt_date', '=', $appointments[$x]->appt_date)
+                //    ->where('appt_start_hour', '>=', $appointments[$x]->appt_start_hour)
+                //    ->where('appt_start_hour', '<', $appointments[$x]->appt_end_hour)
+                //    ->count();
                 $intervalappt = DB::table('appointments')
                     ->where('appt_date', '=', $appointments[$x]->appt_date)
-                    ->where('appt_start_hour', '>=', $appointments[$x]->appt_start_hour)
-                    ->where('appt_start_hour', '<', $appointments[$x]->appt_end_hour)
+                    ->where('start_date_time', '>=', $appointments[$x]->start_date_time)
+                    ->where('start_date_time', '<', $appointments[$x]->end_date_time)
                     ->count();
+                $apptDuring = DB::table('appointments')
+                ->where('appt_date', '=', $appointments[$x]->appt_date)
+                ->whereBetween('start_date_time', [$appointments[$x]->start_date_time, $appointments[$x]->end_date_time])
+                ->orWhereBetween('start_date_time', [$appointments[$x]->start_date_time, $appointments[$x]->end_date_time])
+                ->count();
+            }
+
+            if($intervalappt<=0)
+            {
+                $intervalappt=1;   
             }
             $appointments[$x]->intervalappt=$intervalappt;
+            $appointments[$x]->intervalappt=$apptDuring;
+            $appointments[$x]->intervalappt=5;
             $appointments[$x]->intervalCount=$count;
-            if($intervalappt==$count)
+            $appointments[$x]->intervalDuring=$apptDuring;
+            if($intervalappt<=$count)
             {
-                $count=1;
+                $count=1;                
             }
             else
             {
@@ -108,6 +126,7 @@ class AppointmentController extends Controller
         $startDate=date('Y-m-d', strtotime('-3 day', strtotime($date)));
         $endDate=date('Y-m-d', strtotime('+3 day', strtotime($date)));
         $appointments=self::getApptBetweenDate($startDate, $endDate);
+        //return $appointments;
         return view('appointments.viewcalendar', ['startDate' => $startDate], compact('appointments'));
     }
 
@@ -179,6 +198,8 @@ class AppointmentController extends Controller
         $input['appt_end_hour'] = intval($totalminutes / 60);
         $input['appt_end_minute'] =  $totalminutes % 60;
         $input['appt_with'] = $appt_with_name[0]->name;
+        $input['start_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_start_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_start_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
+        $input['end_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_end_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_end_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
 
         Appointment::create($input);
 
@@ -221,6 +242,8 @@ class AppointmentController extends Controller
             ->select('name')
             ->where('users.id', '=', $input['appt_with_id']) 
             ->get();
+        $input['start_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_start_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_start_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
+        $input['end_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_end_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_end_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
 
         DB::table('appointments')
             ->where('appt_id', $id)
@@ -231,6 +254,8 @@ class AppointmentController extends Controller
                 'appt_start_minute' => $input['appt_start_minute'],
                 'appt_end_hour' => $input['appt_end_hour'], 
                 'appt_end_minute' => $input['appt_end_minute'],
+                'start_date_time' => $input['start_date_time'],
+                'end_date_time' => $input['end_date_time'],
                 'appt_with' => $appt_with_name[0]->name,
                 'appt_with_id' => $input['appt_with_id'],
                 'sms_1hour' => $input['sms_1hour'],
@@ -239,45 +264,4 @@ class AppointmentController extends Controller
 
          return redirect("appointments/showbydate/" . $input['appt_date']);
     }
-
-    public function test($date) 
-    {
-        //$appointments = DB::table('appointments')
-         //   ->where('appt_date', '=', $date) 
-          //  ->get();
-        $appointments = DB::table('appointments')
-            ->where('appt_date', '=', $date) 
-            ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
-            ->orderBy('appointments.appt_start_hour', 'asc')
-            ->orderBy('appointments.appt_start_minute', 'asc')
-            ->orderBy('appointments.appt_end_hour', 'desc')
-            ->orderBy('appointments.appt_end_minute', 'asc')
-            ->get();
-        $count=1;
-        $intervalappt=1;
-        for ($x = 0; $x < count($appointments); $x++) 
-        {
-            if($count<2)
-            {
-                $intervalappt = DB::table('appointments')
-                    ->where('appt_date', '=', $date)
-                    ->where('appt_start_hour', '>=', $appointments[$x]->appt_start_hour)
-                    ->where('appt_start_hour', '<', $appointments[$x]->appt_end_hour)
-                    ->count();
-            }
-            $appointments[$x]->intervalappt=$intervalappt;
-            $appointments[$x]->intervalCount=$count;
-            if($intervalappt==$count)
-            {
-                $count=1;
-            }
-            else
-            {
-                $count++;
-            }
-        } 
-        //return $appointments;
-        return view('appointments.viewcalendar', compact('appointments'));
-    }
-
 }

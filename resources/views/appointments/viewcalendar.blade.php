@@ -49,7 +49,7 @@
 
 					@foreach ($appointments as $appointment)
 						@if ($appointment->appt_date == date('Y-m-d', strtotime("+$i day", strtotime($startDate))))
-							@if ($appointment->intervalappt > 1)
+							@if ($appointment->intervalappt >= 0)
 								@if($appointment->appt_start_minute == 0 && $appointment->appt_end_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
 										<span class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}}">

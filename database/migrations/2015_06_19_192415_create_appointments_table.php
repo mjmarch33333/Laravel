@@ -26,6 +26,8 @@ class CreateAppointmentsTable extends Migration
             $table->integer('appt_with_id');
             $table->integer('sms_1day');
             $table->integer('sms_1hour');
+            $table->datetime('start_date_time');
+            $table->datetime('end_date_time');
             $table->timestamps();
         });
     }
