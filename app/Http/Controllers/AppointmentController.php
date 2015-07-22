@@ -16,6 +16,7 @@ class AppointmentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        date_default_timezone_set('EST');
     }
     /**
      * Display a listing of the resource.
@@ -42,7 +43,8 @@ class AppointmentController extends Controller
     public function viewByUser($id)
     {
         $admin = \Auth::user()->admin_site_id;
-        if ($admin < 1)
+        $myid = \Auth::user()->id;
+        if ($admin < 1 && $myid <> $id)
         {
              return redirect('home');
         }
@@ -98,7 +100,7 @@ class AppointmentController extends Controller
             }
             $appointments[$x]->intervalappt=$intervalappt;
             $appointments[$x]->intervalappt=$apptDuring;
-            $appointments[$x]->intervalappt=5;
+            $appointments[$x]->intervalappt=5;  // This value here sets how many columns will be used across.
             $appointments[$x]->intervalCount=$count;
             $appointments[$x]->intervalDuring=$apptDuring;
             if($intervalappt<=$count)

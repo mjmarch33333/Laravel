@@ -180,10 +180,15 @@
 
 		<!-- This is optional -->
 		<ul class="big-menu">
-			<li><a href="/appointments/create">Create Appointment</a></li>
-			<li><a href="/appointments/viewall">All Appointments</a></li>
-			<li><a href="/admin/viewallusers">All Users</a></li>
-			<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}">Today's Appointments</a></li>
+			@if (\Auth::user()->admin_site_id > 0)
+				<li><a href="/appointments/create">Create Appointment</a></li>
+				<li><a href="/admin/createnewuser">Create New User</a></li>
+				<li><a href="/appointments/viewall">All Appointments</a></li>
+				<li><a href="/admin/viewallusers">All Users</a></li>
+				<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}">Today's Appointments</a></li>
+			@else
+				<li><a href="/appointments/showbyuser/{{\Auth::user()->id}}">My Appointments</a></li>
+			@endif
 			<li><a href="/auth/logout" title="Logout">Logout</a></li>
 		</ul>
 

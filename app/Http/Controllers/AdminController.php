@@ -16,6 +16,7 @@ class AdminController extends Controller
         public function __construct()
     {
         $this->middleware('auth');
+        date_default_timezone_set('EST');
     }
     /**
      * Display a listing of the resource.
@@ -35,6 +36,16 @@ class AdminController extends Controller
     public function create()
     {
         //
+    }
+
+    public function createNewUser()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        return 'you made it';
     }
 
     public function viewUser($id)

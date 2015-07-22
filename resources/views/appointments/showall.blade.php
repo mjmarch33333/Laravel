@@ -22,7 +22,7 @@
 
 	<tr>
 		@if (\Auth::user()->admin_site_id > 0 || \Auth::user()->id === $appointment->user_id)
-			<td><a href="edit/{{ $appointment->appt_id }}">{{ $appointment->appt_date  }}</a>
+			<td><a href="/appointments/edit/{{ $appointment->appt_id }}">{{ $appointment->appt_date  }}</a>
 			</td>
     	@else
     		<td>{{ $appointment->appt_date  }}</td>

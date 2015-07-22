@@ -20,7 +20,7 @@ Route::get('home','HomeController@index');
 Route::get('appointments','AppointmentController@index');
 Route::get('appointments/create/{date}/{hour}/{minute}','AppointmentController@getUserSchedule');
 Route::post('appointments/create/{date}/{hour}/{minute}','AppointmentController@getCreate');
-Route::post('appointments/store/{user}','AppointmentController@store');
+Route::post('appointments/store/{idtoupdate}','AppointmentController@store');
 Route::get('appointments/viewall', 'AppointmentController@viewAll');
 Route::get('appointments/showbyuser/{id}', 'AppointmentController@viewByUser');
 Route::get('appointments/showbydate/{date}', 'AppointmentController@viewByDate');
@@ -31,6 +31,7 @@ Route::get('appointments/test/{date}', 'AppointmentController@test');
 
 // Admin Routes
 Route::get('admin/viewallusers','AdminController@viewAllUsers');
+Route::get('/admin/createnewuser','AdminController@createNewUser');
 Route::get('admin/viewuser/{id}','AdminController@viewUser');
 Route::post('admin/viewuser/{id}','AdminController@update');
 

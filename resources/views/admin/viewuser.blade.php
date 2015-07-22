@@ -76,4 +76,11 @@
     </div>
 </form>
 
+<br>
+<br>
+<p class="button-height">
+    <a href="/appointments/showbyuser/{{ $users[0]->id }}" class="button huge full-width">View Appointments</a>
+</p>
+
+
 @stop
