@@ -38,16 +38,6 @@ class AdminController extends Controller
         //
     }
 
-    public function createNewUser()
-    {
-        $admin = \Auth::user()->admin_site_id;
-        if ($admin < 1)
-        {
-             return redirect('home');
-        }
-        return 'you made it';
-    }
-
     public function viewUser($id)
     {
         $admin = \Auth::user()->admin_site_id;
@@ -161,5 +151,31 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function formNewUser()
+    {
+        return view('admin.register');
+    }
+
+    public function createNewUser()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        $input = Request::all();
+
+        User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'phone_number' => $input['phone_number'],
+            'admin_site_id' => 0,
+            'schedule_site_id' => 0,
+            'password' => bcrypt($input['password']),
+        ]);
+
+        return redirect('admin/viewallusers');
     }
 }

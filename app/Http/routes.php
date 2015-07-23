@@ -31,7 +31,8 @@ Route::get('appointments/test/{date}', 'AppointmentController@test');
 
 // Admin Routes
 Route::get('admin/viewallusers','AdminController@viewAllUsers');
-Route::get('/admin/createnewuser','AdminController@createNewUser');
+Route::get('admin/createnewuser','AdminController@formNewUser');
+Route::post('admin/createnewuser','AdminController@createNewUser');
 Route::get('admin/viewuser/{id}','AdminController@viewUser');
 Route::post('admin/viewuser/{id}','AdminController@update');
 
