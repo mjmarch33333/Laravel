@@ -27,6 +27,7 @@ Route::get('appointments/showbydate/{date}', 'AppointmentController@viewByDate')
 Route::get('appointments/edit/{id}', 'AppointmentController@edit');
 Route::post('appointments/edit/{id}', 'AppointmentController@update');
 Route::get('appointments/test/{date}', 'AppointmentController@test');
+Route::post('appointments/gotodate', 'AppointmentController@goToDate');
 
 
 // Admin Routes

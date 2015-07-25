@@ -71,6 +71,39 @@
     </span>
 </p>
 @endif
+<p class="button-height inline-label">
+    <span class="label">Color</span>
+    <span class="button-group">
+        <label for="button-color-1" class="button red-active">
+            <input type="radio" name="color" id="button-color-1" value="red" checked>
+                                    Red
+        </label>
+        <label for="button-color-2" class="button orange-active">
+            <input type="radio" name="color" id="button-color-2" value="orange">
+                                    Orange
+        </label>
+        <label for="button-color-3" class="button green-active">
+            <input type="radio" name="color" id="button-color-3" value="green">
+                                    Green
+        </label>
+        <label for="button-color-4" class="button black-active">
+            <input type="radio" name="color" id="button-color-4" value="black">
+                                    Black
+        </label>
+        <label for="button-color-5" class="button anthracite-active">
+            <input type="radio" name="color" id="button-color-5" value="anthracite">
+                                    Anthracite
+        </label>
+        <label for="button-color-6" class="button grey-active">
+            <input type="radio" name="color" id="button-color-6" value="grey">
+                                    Grey
+        </label>
+        <label for="button-color-7" class="button blue-active">
+            <input type="radio" name="color" id="button-color-7" value="blue">
+                                    Blue
+        </label>
+    </span>
+</p>
     <div>
         <button type="submit">Update Profile</button>
     </div>

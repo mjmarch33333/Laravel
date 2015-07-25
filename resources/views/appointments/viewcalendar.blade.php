@@ -7,6 +7,18 @@
 
 @section('content')
 
+<form method="POST" action="/appointments/gotodate">
+    {!! csrf_field() !!}
+        <p class="button-height inline-label">
+        <label for="validation-select" class="label">Go-To-Date</label>
+        <input type="date" name="go_to_date" value="{{date('Y-m-d', strtotime("+3 day", strtotime($startDate)))}}" onchange='this.form.submit()'>
+    </p>
+</form>
+
+@foreach ($apptpeople as $apptperson)
+	<a href="javascript:void(0)" class="button {{$apptperson->color}}-gradient glossy disabled">{{$apptperson->name}}</a>
+@endforeach
+<br>
 </table>
 
 	<div class="agenda with-header auto-scroll" data-agenda-options='{"auto":false,"first":3}'>
@@ -52,28 +64,28 @@
 							@if ($appointment->intervalappt >= 0)
 								@if($appointment->appt_start_minute == 0 && $appointment->appt_end_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-										<span class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}}">
+										<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>
 									</a>
 								@elseif($appointment->appt_start_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-										<span class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}}">
+										<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>		
 									</a>
 								@elseif($appointment->appt_end_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-									 	<span class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}}">
+									 	<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>	
 									</a>	
 								@else
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-										<span class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}}">
+										<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt+1}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>									
@@ -81,22 +93,22 @@
 								@endif
 							@else
     							@if($appointment->appt_start_minute == 0 && $appointment->appt_end_minute == 0)
-									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}">
+									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}} {{ $appointment->appt_color }}-gradient">
 										<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 										Appt: {{ $appointment->name }}
 									</a>
 								@elseif($appointment->appt_start_minute == 0)
-									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT) }}">
+									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT) }} {{ $appointment->appt_color }}-gradient">
 										<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 										Appt: {{ $appointment->name }}
 									</a>
 								@elseif($appointment->appt_end_minute == 0)
-									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} to-{{ $appointment->appt_end_hour}}">
+									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} to-{{ $appointment->appt_end_hour}} {{ $appointment->appt_color }}-gradient">
 										<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 										Appt: {{ $appointment->name }}
 									</a>
 								@else
-									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT) }}">
+									<a href="/appointments/edit/{{ $appointment->appt_id }}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT) }} {{ $appointment->appt_color }}-gradient">
 										<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 										Appt: {{ $appointment->name }}
 									</a>
@@ -144,28 +156,28 @@
 							@if ($appointment->intervalappt > 1)
 								@if($appointment->appt_start_minute == 0 && $appointment->appt_end_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-										<span class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}}">
+										<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>
 									</a>
 								@elseif($appointment->appt_start_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-										<span class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}}">
+										<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>		
 									</a>
 								@elseif($appointment->appt_end_minute == 0)
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-									 	<span class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}}">
+									 	<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>	
 									</a>	
 								@else
 									<a href="/appointments/edit/{{ $appointment->appt_id }}">
-										<span class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}}">
+										<span title="{{ $appointment->name }} {{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}" class="agenda-event from-{{ $appointment->appt_start_hour}}-{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT)}} to-{{ $appointment->appt_end_hour}}-{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}} event-{{ $appointment->intervalCount}}-on-{{ $appointment->intervalappt}} {{ $appointment->appt_color }}-gradient">
 											<time>{{ $appointment->appt_start_hour}}:{{ str_pad($appointment->appt_start_minute, 2, '0', STR_PAD_LEFT) }} - {{ $appointment->appt_end_hour}}:{{ str_pad($appointment->appt_end_minute, 2, '0', STR_PAD_LEFT)}}</time>
 											Appt: {{ $appointment->name }}
 										</span>									

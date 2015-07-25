@@ -40,6 +40,12 @@ class AppointmentController extends Controller
         return view('appointments.showall', compact('appointments'));
     }
 
+    public function goToDate()
+    {
+        $input = Request::all();
+        return redirect("/appointments/showbydate/" . $input['go_to_date']);
+    }
+
     public function viewByUser($id)
     {
         $admin = \Auth::user()->admin_site_id;
@@ -128,8 +134,11 @@ class AppointmentController extends Controller
         $startDate=date('Y-m-d', strtotime('-3 day', strtotime($date)));
         $endDate=date('Y-m-d', strtotime('+3 day', strtotime($date)));
         $appointments=self::getApptBetweenDate($startDate, $endDate);
+        $apptpeople = DB::table('users')
+            ->where('users.schedule_site_id', '>', '0') 
+            ->get();
         //return $appointments;
-        return view('appointments.viewcalendar', ['startDate' => $startDate], compact('appointments'));
+        return view('appointments.viewcalendar', ['startDate' => $startDate], compact('appointments', 'apptpeople'));
     }
 
     /**
@@ -179,7 +188,7 @@ class AppointmentController extends Controller
         return view('appointments.selectuser', compact('apptpeople'), $data);
     }
 
-    public function store($idtoupdate) 
+    public function store($idtoupdate, Requests\AppointmentRequest $request) 
     {
         $admin = \Auth::user()->admin_site_id;
         if ($admin < 1)
@@ -190,7 +199,7 @@ class AppointmentController extends Controller
         $input = Request::all();
 
         $appt_with_name = DB::table('users')
-            ->select('name')
+            ->select('name', 'color')
             ->where('users.id', '=', $input['appt_with_id']) 
             ->get();
 
@@ -200,6 +209,7 @@ class AppointmentController extends Controller
         $input['appt_end_hour'] = intval($totalminutes / 60);
         $input['appt_end_minute'] =  $totalminutes % 60;
         $input['appt_with'] = $appt_with_name[0]->name;
+        $input['appt_color'] = $appt_with_name[0]->color;
         $input['start_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_start_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_start_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
         $input['end_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_end_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_end_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
 
@@ -230,7 +240,7 @@ class AppointmentController extends Controller
         return view('appointments.edit', compact('appointments'), compact('apptpeople'));
     }
 
-    public function update($id) 
+    public function update($id, Requests\AppointmentRequest $request) 
     {
         $admin = \Auth::user()->admin_site_id;
         if ($admin < 1)
@@ -241,7 +251,7 @@ class AppointmentController extends Controller
         $input = Request::all();
 
         $appt_with_name = DB::table('users')
-            ->select('name')
+            ->select('name', 'color')
             ->where('users.id', '=', $input['appt_with_id']) 
             ->get();
         $input['start_date_time'] = $input['appt_date'] . " " . str_pad($input['appt_start_hour'], 2, '0', STR_PAD_LEFT) . ":" . str_pad($input['appt_start_minute'], 2, '0', STR_PAD_LEFT) . ":00"; 
@@ -261,6 +271,7 @@ class AppointmentController extends Controller
                 'appt_with' => $appt_with_name[0]->name,
                 'appt_with_id' => $input['appt_with_id'],
                 'sms_1hour' => $input['sms_1hour'],
+                'appt_color' => $appt_with_name[0]->color,
                 'sms_1day' => $input['sms_1day']
                 ]);
 

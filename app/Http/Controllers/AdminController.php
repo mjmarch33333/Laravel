@@ -135,7 +135,8 @@ class AdminController extends Controller
                     ['email' => $input['email'],
                     'phone_number' => $input['phone_number'], 
                     'admin_site_id' => $input['admin_site_id'], 
-                    'schedule_site_id' => $input['schedule_site_id']
+                    'schedule_site_id' => $input['schedule_site_id'],
+                    'color' => $input['color']
                     ]);
         }
 
@@ -173,7 +174,9 @@ class AdminController extends Controller
             'phone_number' => $input['phone_number'],
             'admin_site_id' => 0,
             'schedule_site_id' => 0,
-            'password' => bcrypt($input['password']),
+            'password' => bcrypt($input
+
+                ['password']),
         ]);
 
         return redirect('admin/viewallusers');
