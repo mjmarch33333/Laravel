@@ -186,6 +186,7 @@
 				<li><a href="/appointments/viewall">All Appointments</a></li>
 				<li><a href="/admin/viewallusers">All Users</a></li>
 				<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}">Today's Appointments</a></li>
+				<li><a href="/admin/sendsimplesms">Send SMS</a></li>
 			@else
 				<li><a href="/appointments/showbyuser/{{\Auth::user()->id}}">My Appointments</a></li>
 			@endif
