@@ -36,6 +36,9 @@ Route::get('admin/createnewuser','AdminController@formNewUser');
 Route::post('admin/createnewuser','AdminController@createNewUser');
 Route::get('admin/viewuser/{id}','AdminController@viewUser');
 Route::post('admin/viewuser/{id}','AdminController@update');
+Route::get('admin/sendsimplesms', 'AdminController@setupSimpleSMS');
+Route::post('admin/sendsimplesms', 'AdminController@sendSimpleSMS');
+Route::get('admin/test', 'AdminController@test');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

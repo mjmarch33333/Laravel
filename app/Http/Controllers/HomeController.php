@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index()
     {
         //$output = "hi " . \Auth::user()->name;
-        date_default_timezone_set('EST');
+        date_default_timezone_set('America/New_York');
         return view('home');
     }
 

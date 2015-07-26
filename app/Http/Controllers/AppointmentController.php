@@ -16,7 +16,7 @@ class AppointmentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        date_default_timezone_set('EST');
+        date_default_timezone_set('America/New_York');
     }
     /**
      * Display a listing of the resource.

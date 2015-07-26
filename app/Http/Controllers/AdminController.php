@@ -16,7 +16,7 @@ class AdminController extends Controller
         public function __construct()
     {
         $this->middleware('auth');
-        date_default_timezone_set('EST');
+        date_default_timezone_set('America/New_York');
     }
     /**
      * Display a listing of the resource.
@@ -36,6 +36,47 @@ class AdminController extends Controller
     public function create()
     {
         //
+    }
+
+    public function setupSimpleSMS()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        return view('admin.sendSimpleSMS');   
+    }
+    public function sendSimpleSMS()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        $input = Request::all();
+        $phone_number = $input['phone_number'];
+        $message = $input['message'];
+        $message = str_replace(' ', '%20', $message);
+        $url='http://sms2.cdyne.com/sms.svc/SimpleSMSsend?PhoneNumber=(' . $phone_number . ')&Message=' . $message . '&LicenseKey=(CA15470E-7E96-4F6A-B285-94284AA68B59)';
+ 
+        $cURL = curl_init();
+ 
+        curl_setopt($cURL,CURLOPT_URL,$url);
+        curl_setopt($cURL,CURLOPT_HTTPGET,true);
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Accept: application/json'));
+ 
+        $result = curl_exec($cURL);
+ 
+        curl_close($cURL);
+
+        // View the response from CDYNE
+        return $result;
+    }
+
+    public function test()
+    {
+        return phpinfo();
     }
 
     public function viewUser($id)
