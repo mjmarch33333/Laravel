@@ -277,4 +277,39 @@ class AppointmentController extends Controller
 
          return redirect("appointments/showbydate/" . $input['appt_date']);
     }
+
+    public function previewDelete($id)
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        // I had to add use DB; and use App\Quotation; above to get below query to work
+        $appointments = DB::table('appointments')
+            ->where('appointments.appt_id', '=', $id) 
+            ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
+            ->get();
+
+        $apptpeople = DB::table('users')
+            ->where('users.schedule_site_id', '>', '0') 
+            ->get();
+
+        return view('appointments.delete', compact('appointments'), compact('apptpeople'));
+    }
+
+    public function performDelete($id)
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        DB::table('appointments')
+            ->where('appt_id', $id)->delete();
+
+        \Session::flash('flash_message', 'Appointment has been deleted.');
+        
+        return redirect("appointments/viewall");
+    }
 }

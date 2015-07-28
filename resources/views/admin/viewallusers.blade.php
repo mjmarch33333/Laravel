@@ -6,22 +6,28 @@
 
 @section('content')
 
-<table border="1" style="width:100%">
-	<tr>	
-    	<td>Name</td>
-    	<td>Email</td>
-        <td>Phone Number</td>
-    	<td>Admin</td>
-    	<td>Schedule Appointments</td>
-  </tr>
+<table class="table responsive-table" id="sorting-advanced">
+    <thead>
+        <tr>
+            <th scope="col"width="30%" class="align-center">Name</th>
+            <th scope="col" width="15%" class="align-center">Email</th>
+            <th scope="col" width="15%" class="align-center">Phone Number</th>
+            <th scope="col" width="15%" class="align-center">Date of Birth</th>
+            <th scope="col" width="20" class="align-center">Admin</th>
+            <th scope="col" width="20" class="align-center">Schedule</th>
+            <th scope="col" width="45" class="align-center">Action</th>
+        </tr>
+    </thead>
+<tbody>
 @foreach ($users as $user)
 
-	<tr>
-    	<td><a href="/admin/viewuser/{{$user->id}}">{{ $user->name }}</a></td>
+    <tr>
+        <td>{{ $user->name }}</td>
         <td>{{ $user->email }}</td>
-    	<td>{{ $user->phone_number }}</td>		
+        <td>{{ $user->phone_number }}</td>      
+        <td>{{ $user->date_of_birth }}</td>  
         @if ($user->admin_site_id > 0)
-        	<td>YES</td>
+            <td>YES</td>
         @else
             <td>NO</td>
         @endif
@@ -30,9 +36,15 @@
         @else
             <td>NO</td>
         @endif
-  	</tr>
+        <td class="low-padding align-center">
+            <a href="/admin/viewuser/{{$user->id}}" title = "Edit" class="button compact icon-gear"></a>
+            <a href="/admin/viewuser/{{$user->id}}" title = "Appointments" class="button compact icon-read"></a>
+        </td>
+    </tr>
 
 @endforeach
+    </tbody>
+
 </table>
 
 @stop

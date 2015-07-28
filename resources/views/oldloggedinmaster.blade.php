@@ -114,9 +114,6 @@
 
 		<div class="with-padding">
 
-			@if (Session::has('flash_message'))
-				<h2><div class="alert alert-success">{{ Session::get('flash_message') }}<div></h2><br>
-			@endif
 			<!-- Main content here -->
 
 			@yield('content')
@@ -142,9 +139,10 @@
 			<li>
 		@endif
 		<a href="/appointments/viewall" class="shortcut-agenda" title="Appointments">Appointments</a></li>
-		@if (\Auth::user()->admin_site_id > 0)
-			<li><a href="/admin/viewallusers" class="shortcut-contacts" title="Contacts">Contacts</a></li>
-		@endif
+		<li><a href="tables.html" class="shortcut-contacts" title="Contacts">Contacts</a></li>
+		<li><a href="explorer.html" class="shortcut-medias" title="Medias">Medias</a></li>
+		<li><a href="sliders.html" class="shortcut-stats" title="Stats">Stats</a></li>
+		<li><a href="form.html" class="shortcut-settings" title="Settings">Settings</a></li>
 		@if (Request::is('admin/*'))
 			<li class="current">
 		@else

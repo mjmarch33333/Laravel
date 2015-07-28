@@ -22,6 +22,12 @@
         <input type="text" name="phone_number" id="input-2" size="9" class="input full-width" value="{{ $users[0]->phone_number }}">
 </p>
 
+</p>
+    <p class="button-height inline-label">
+        <label for="validation-select" class="label">Date of Birth</label>
+        <input type="date" name="date_of_birth" id="input-3" size="9" class="input full-width" value="{{ $users[0]->date_of_birth }}">
+</p>
+
 @if (\Auth::user()->admin_site_id > 0)
 <p class="button-height inline-label">
     <span class="label">Administrator</span>

@@ -90,8 +90,7 @@ class AdminController extends Controller
 
         // I had to add use DB; and use App\Quotation; above to get below query to work
         $users = DB::table('users')
-            ->where('id', '=', $id)
-            ->get();
+            ->where('id', '=', $id)->orderBy('last_name')->get();
 
         return view('admin.viewuser', compact('users'));   
     }
@@ -175,6 +174,7 @@ class AdminController extends Controller
                 ->update(
                     ['email' => $input['email'],
                     'phone_number' => $input['phone_number'], 
+                    'date_of_birth' => $input['date_of_birth'],
                     'admin_site_id' => $input['admin_site_id'], 
                     'schedule_site_id' => $input['schedule_site_id'],
                     'color' => $input['color']
@@ -208,16 +208,18 @@ class AdminController extends Controller
              return redirect('home');
         }
         $input = Request::all();
-
+        $input['name'] = $input['first_name'] . " " . $input['middle_name'] . " " . $input['last_name'];
         User::create([
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
+            'middle_name' => $input['middle_name'],
             'name' => $input['name'],
+            'date_of_birth' => $input['date_of_birth'],
             'email' => $input['email'],
             'phone_number' => $input['phone_number'],
             'admin_site_id' => 0,
             'schedule_site_id' => 0,
-            'password' => bcrypt($input
-
-                ['password']),
+            'password' => bcrypt($input['password']),
         ]);
 
         return redirect('admin/viewallusers');
