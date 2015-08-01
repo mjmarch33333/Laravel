@@ -108,9 +108,10 @@
 		<noscript class="message black-gradient simpler">Your browser does not support JavaScript! Some features won't work as expected...</noscript>
 
 		<hgroup id="main-title" class="thin">
-			<h1>@yield('title')</h1>
 			<h2>{{date("h:i:sa")}} Today is {{date("l")}} <strong>{{ date("F") }} {{ date("d") }}, {{ date("Y") }}</strong></h2>
 		</hgroup>
+
+		<br><h1>@yield('title')</h1>
 
 		<div class="with-padding">
 
@@ -187,11 +188,10 @@
 		<!-- This is optional -->
 		<ul class="big-menu">
 			@if (\Auth::user()->admin_site_id > 0)
-				<li><a href="/appointments/create">Create Appointment</a></li>
 				<li><a href="/admin/createnewuser">Create New User</a></li>
 				<li><a href="/appointments/viewall">All Appointments</a></li>
 				<li><a href="/admin/viewallusers">All Users</a></li>
-				<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}">Today's Appointments</a></li>
+				<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}/0">Today's Appointments</a></li>
 				<li><a href="/admin/sendsimplesms">Send SMS</a></li>
 			@else
 				<li><a href="/appointments/showbyuser/{{\Auth::user()->id}}">My Appointments</a></li>

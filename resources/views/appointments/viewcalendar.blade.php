@@ -7,7 +7,7 @@
 
 @section('content')
 
-<form method="POST" action="/appointments/gotodate">
+<form method="POST" action="/appointments/gotodate/{{$user_to_schedule}}">
     {!! csrf_field() !!}
         <p class="button-height inline-label">
         <label for="validation-select" class="label">Go-To-Date</label>
@@ -50,7 +50,11 @@
 						{{date("l",strtotime(date('Y-m-d', strtotime("+$i day", strtotime($startDate)))))}} {{date('F', strtotime("+$i day", strtotime($startDate)))}} {{date('d', strtotime("+$i day", strtotime($startDate)))}}, {{date('Y', strtotime("+$i day", strtotime($startDate)))}}
 					</div>
 					@for ($n = 7; $n < 20; $n++)
-						<a href="/appointments/create/{{date('Y-m-d', strtotime("+$i day", strtotime($startDate)))}}/{{$n}}/0">	
+						@if ($user_to_schedule > 0)
+							<a href="/appointments/createwithuser/{{date('Y-m-d', strtotime("+$i day", strtotime($startDate)))}}/{{$n}}/0/{{$user_to_schedule}}">	
+						@else
+							<a href="/appointments/create/{{date('Y-m-d', strtotime("+$i day", strtotime($startDate)))}}/{{$n}}/0">	
+						@endif
 							<span class="agenda-event from-{{$n}} to-{{$n+1}} anthracite-gradient event-6-on-6">
 								<time>{{$n}} - {{$n+1}}</time>
 								Create Appt

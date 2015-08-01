@@ -1,0 +1,2 @@
+
+This is a reminder for {{$currentRow['name']}} that you have an appointment with {{$currentRow['appt_with']}} on {{$currentRow['appt_date']}} at {{str_pad($currentRow['appt_start_hour'], 2, '0', STR_PAD_LEFT)}}:{{str_pad($currentRow['appt_start_minute'], 2, '0', STR_PAD_LEFT)}}

@@ -40,10 +40,10 @@ class AppointmentController extends Controller
         return view('appointments.showall', compact('appointments'));
     }
 
-    public function goToDate()
+    public function goToDate($id)
     {
         $input = Request::all();
-        return redirect("/appointments/showbydate/" . $input['go_to_date']);
+        return redirect("/appointments/showbydate/" . $input['go_to_date'] . "/" . $id);
     }
 
     public function viewByUser($id)
@@ -121,7 +121,7 @@ class AppointmentController extends Controller
         return $appointments;
     }
 
-    public function viewByDate($date)
+    public function viewByDate($date, $id)
     {
         $admin = \Auth::user()->admin_site_id;
         if ($admin < 1)
@@ -138,7 +138,9 @@ class AppointmentController extends Controller
             ->where('users.schedule_site_id', '>', '0') 
             ->get();
         //return $appointments;
-        return view('appointments.viewcalendar', ['startDate' => $startDate], compact('appointments', 'apptpeople'));
+        $data['startDate'] = $startDate;
+        $data['user_to_schedule'] = $id;
+        return view('appointments.viewcalendar', $data, compact('appointments', 'apptpeople'));
     }
 
     /**
@@ -168,6 +170,30 @@ class AppointmentController extends Controller
         $data['hour'] = $hour;
         $data['minute'] = $minute;
         $data['userid'] = $input['appt_for_id'];
+        $data['name'] = $apptuser->name;
+        return view('appointments.create', compact('apptpeople'), $data);
+    }
+
+    public function getCreateWithUser($date, $hour, $minute, $id)
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        $apptpeople = DB::table('users')
+            ->where('users.schedule_site_id', '>', '0') 
+            ->get();
+
+        $apptuser = DB::table('users')
+            ->where('users.id', '=', $id) 
+            ->first();
+
+        $data = [];
+        $data['date'] = $date;
+        $data['hour'] = $hour;
+        $data['minute'] = $minute;
+        $data['userid'] = $id;
         $data['name'] = $apptuser->name;
         return view('appointments.create', compact('apptpeople'), $data);
     }
@@ -215,7 +241,7 @@ class AppointmentController extends Controller
 
         Appointment::create($input);
 
-        return redirect("appointments/showbydate/" . $input['appt_date']);
+        return redirect("appointments/showbydate/" . $input['appt_date'] . "/0");
     }
 
     public function edit($id)
@@ -275,7 +301,7 @@ class AppointmentController extends Controller
                 'sms_1day' => $input['sms_1day']
                 ]);
 
-         return redirect("appointments/showbydate/" . $input['appt_date']);
+         return redirect("appointments/showbydate/" . $input['appt_date'] . "/0");
     }
 
     public function previewDelete($id)

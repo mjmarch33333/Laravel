@@ -15,7 +15,7 @@
             <th scope="col" width="15%" class="align-center">Date of Birth</th>
             <th scope="col" width="20" class="align-center">Admin</th>
             <th scope="col" width="20" class="align-center">Schedule</th>
-            <th scope="col" width="45" class="align-center">Action</th>
+            <th scope="col" width="70" class="align-center">Action</th>
         </tr>
     </thead>
 <tbody>
@@ -39,6 +39,7 @@
         <td class="low-padding align-center">
             <a href="/admin/viewuser/{{$user->id}}" title = "Edit" class="button compact icon-gear"></a>
             <a href="/admin/viewuser/{{$user->id}}" title = "Appointments" class="button compact icon-read"></a>
+            <a href="/appointments/showbydate/{{date('Y-m-d')}}/{{$user->id}}" title = "Schedule Appointment" class="button compact icon-squared-plus"></a>
         </td>
     </tr>
 

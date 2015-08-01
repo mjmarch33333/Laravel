@@ -15,19 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('home','HomeController@index');
+Route::get('test/{id}','HomeController@test');
 
 // Appointment Routes
 Route::get('appointments','AppointmentController@index');
 Route::get('appointments/create/{date}/{hour}/{minute}','AppointmentController@getUserSchedule');
 Route::post('appointments/create/{date}/{hour}/{minute}','AppointmentController@getCreate');
+Route::get('appointments/createwithuser/{date}/{hour}/{minute}/{id}','AppointmentController@getCreateWithUser');
 Route::post('appointments/store/{idtoupdate}','AppointmentController@store');
 Route::get('appointments/viewall', 'AppointmentController@viewAll');
 Route::get('appointments/showbyuser/{id}', 'AppointmentController@viewByUser');
-Route::get('appointments/showbydate/{date}', 'AppointmentController@viewByDate');
+Route::get('appointments/showbydate/{date}/{id}', 'AppointmentController@viewByDate');
 Route::get('appointments/edit/{id}', 'AppointmentController@edit');
 Route::post('appointments/edit/{id}', 'AppointmentController@update');
 Route::get('appointments/test/{date}', 'AppointmentController@test');
-Route::post('appointments/gotodate', 'AppointmentController@goToDate');
+Route::post('appointments/gotodate/{id}', 'AppointmentController@goToDate');
 Route::get('appointments/delete/{id}', 'AppointmentController@previewDelete');
 Route::post('appointments/delete/{id}', 'AppointmentController@performDelete');
 
