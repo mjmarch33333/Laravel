@@ -58,7 +58,8 @@ class AdminController extends Controller
         $phone_number = $input['phone_number'];
         $message = $input['message'];
         $message = str_replace(' ', '%20', $message);
-        $url='http://sms2.cdyne.com/sms.svc/SimpleSMSsend?PhoneNumber=(' . $phone_number . ')&Message=' . $message . '&LicenseKey=(CA15470E-7E96-4F6A-B285-94284AA68B59)';
+        $licenseKey = env('CDYNE_KEY');
+        $url='http://sms2.cdyne.com/sms.svc/SimpleSMSsend?PhoneNumber=(' . $phone_number . ')&Message=' . $message . '&LicenseKey=(' . $licenseKey . ')';
  
         $cURL = curl_init();
  

@@ -50,6 +50,9 @@ class HomeController extends Controller
         //        $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
         //    });
         //} 
+        echo "testvar: ";
+        echo env('TEST_VAR');
+
         for ($x = 0; $x < count($sms1day); $x++)  
         {
             echo $x;
