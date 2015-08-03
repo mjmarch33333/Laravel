@@ -17,6 +17,11 @@ class HomeController extends Controller
      *
      * @return Response
      */
+        public function __construct()
+    {
+        date_default_timezone_set('America/New_York');
+    }
+
     public function index()
     {
        
@@ -26,32 +31,30 @@ class HomeController extends Controller
 
     public function test(Request $request, $id)
     {
-        $tomorrowDate=date('Y-m-d', strtotime("+1 day", strtotime(date('Y-m-d'))));
+        $hourPlus2 = date('G','5'); 
+        return $hourPlus2;
+  
+    }
 
+    public function sendEmail2hours(Request $request, $id)
+    {
+        $hourPlus2 = date('G')+2; 
+
+        if($hourPlus2>23)
+        {
+            $hourPlus2=$hourPlus2-24;
+            $date = date('Y-m-d', strtotime("+1 day", strtotime(date('Y-m-d'))));
+        } 
+        else
+        {
+            $date = date('Y-m-d');
+        }
         $sms1day = DB::table('appointments')
-            ->where('appt_date', '=', $tomorrowDate)
-            ->where('sms_1day', '=', 1)
+            ->where('appt_date', '=', $date)
+            ->where('sms_1hour', '=', 1)    
+            ->where('appt_start_hour', '=', $hourPlus2)        
             ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
             ->get();
-
-        //Mail::send('home', ['user' => $user], function ($m) use ($user) {
-        //    $m->to($user->email, $user->name)->subject('Appointment Reminder3');
-        //    $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
-        //});
-        //Mail::queue('home', ['user' => $user], function ($m) use ($user) {
-        //    $m->to($user->email, $user->name)->subject('Initial email from Queue');
-        //    $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
-        //});
-
-        //for ($x = 0; $x < count($sms1day); $x++)  
-        //{
-        //    Mail::queue('email.reminder', ['user' => $user], function ($m) use ($user) {
-        //        $m->to($user->email, $user->name)->subject('Appointment Reminder for ' . $user->name);
-        //        $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
-        //    });
-        //} 
-        echo "testvar: ";
-        echo env('TEST_VAR');
 
         for ($x = 0; $x < count($sms1day); $x++)  
         {
@@ -64,6 +67,29 @@ class HomeController extends Controller
             });
         } 
 
+        return $sms1day;
+    }
+
+    public function sendEmail1Day(Request $request)
+    {
+        $tomorrowDate=date('Y-m-d', strtotime("+1 day", strtotime(date('Y-m-d'))));
+
+        $sms1day = DB::table('appointments')
+            ->where('appt_date', '=', $tomorrowDate)
+            ->where('sms_1day', '=', 1)
+            ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
+            ->get();
+
+        for ($x = 0; $x < count($sms1day); $x++)  
+        {
+            echo $x;
+            echo '<br>';
+            $currentRow=$sms1day[$x];
+            Mail::queue('email.reminder', ['currentRow' => $currentRow], function ($m) use ($currentRow) {
+                $m->to($currentRow->email, $currentRow->name)->subject('Appointment Reminder for ' . $currentRow->name);
+                $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
+            });
+        } 
 
         return $sms1day;
     }

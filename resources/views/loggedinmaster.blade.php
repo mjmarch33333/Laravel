@@ -190,6 +190,8 @@
 			@if (\Auth::user()->admin_site_id > 0)
 				<li><a href="/admin/createnewuser">Create New User</a></li>
 				<li><a href="/appointments/viewall">All Appointments</a></li>
+				<li><a href="/appointments/pastappointments">All Past Appointments</a></li>
+				<li><a href="/appointments/futureappointments">All Future Appointments</a></li>
 				<li><a href="/admin/viewallusers">All Users</a></li>
 				<li><a href="/appointments/showbydate/{{ date('Y-m-d') }}/0">Today's Appointments</a></li>
 				<li><a href="/admin/sendsimplesms">Send SMS</a></li>

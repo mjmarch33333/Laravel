@@ -31,8 +31,45 @@ class AppointmentController extends Controller
 
     public function viewAll()
     {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        $appointments = DB::table('appointments')
+            ->leftJoin('users', 'appointments.user_id', '=', 'users.id')
+            ->orderBy('appt_date', 'asc', 'appt_hour', 'asc', 'appt_minute', 'asc')
+            ->get();
+
+        return view('appointments.showall', compact('appointments'));
+    }
+
+    public function viewPastAppointments()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        $appointments = DB::table('appointments')
+            ->where('appointments.appt_date', '<', date('Y-m-d')) 
+            ->leftJoin('users', 'appointments.user_id', '=', 'users.id')
+            ->orderBy('appt_date', 'asc', 'appt_hour', 'asc', 'appt_minute', 'asc')
+            ->get();
+
+        return view('appointments.showall', compact('appointments'));
+    }
+
+    public function viewFutureAppointments()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
 
         $appointments = DB::table('appointments')
+            ->where('appointments.appt_date', '>=', date('Y-m-d')) 
             ->leftJoin('users', 'appointments.user_id', '=', 'users.id')
             ->orderBy('appt_date', 'asc', 'appt_hour', 'asc', 'appt_minute', 'asc')
             ->get();
@@ -67,6 +104,11 @@ class AppointmentController extends Controller
 
     private function getApptBetweenDate($firstDate, $secondDate)
     {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
         $appointments = DB::table('appointments')
             ->where('appt_date', '>=', $firstDate)
             ->where('appt_date', '<=', $secondDate) 

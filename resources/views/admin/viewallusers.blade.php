@@ -38,7 +38,7 @@
         @endif
         <td class="low-padding align-center">
             <a href="/admin/viewuser/{{$user->id}}" title = "Edit" class="button compact icon-gear"></a>
-            <a href="/admin/viewuser/{{$user->id}}" title = "Appointments" class="button compact icon-read"></a>
+            <a href="/appointments/showbyuser/{{$user->id}}" title = "Appointments" class="button compact icon-read"></a>
             <a href="/appointments/showbydate/{{date('Y-m-d')}}/{{$user->id}}" title = "Schedule Appointment" class="button compact icon-squared-plus"></a>
         </td>
     </tr>

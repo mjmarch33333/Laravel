@@ -32,6 +32,8 @@ Route::get('appointments/test/{date}', 'AppointmentController@test');
 Route::post('appointments/gotodate/{id}', 'AppointmentController@goToDate');
 Route::get('appointments/delete/{id}', 'AppointmentController@previewDelete');
 Route::post('appointments/delete/{id}', 'AppointmentController@performDelete');
+Route::get('appointments/pastappointments', 'AppointmentController@viewPastAppointments');
+Route::get('appointments/futureappointments', 'AppointmentController@viewFutureAppointments');
 
 // Admin Routes
 Route::get('admin/viewallusers','AdminController@viewAllUsers');
