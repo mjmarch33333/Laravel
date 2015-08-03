@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\NotifyOneDaySMS::class,
+        \App\Console\Commands\NotifyOneHourSMS::class,
     ];
 
     /**
