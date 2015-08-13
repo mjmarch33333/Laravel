@@ -57,13 +57,32 @@ class NotifyOneHourSMS extends Command
             ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
             ->get();
 
+        //Start Curl
+        $cURL = curl_init();
+        curl_setopt($cURL,CURLOPT_HTTPGET,true);
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Accept: application/json'));
         for ($x = 0; $x < count($sms1day); $x++)  
         {
+            echo 'Sending SMS message';
             $currentRow=$sms1day[$x];
-            Mail::queue('email.reminder', ['currentRow' => $currentRow], function ($m) use ($currentRow) {
-                $m->to($currentRow->email, $currentRow->name)->subject('Appointment Reminder for ' . $currentRow->name);
-                $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
-            });
+            //Send SMS
+            $licenseKey = env('TROPO_TOKEN');
+            $dayOfWeek=date('l', strtotime($currentRow->appt_date));
+            $month= date("F", strtotime($currentRow->appt_date)); 
+            $day = date("d", strtotime($currentRow->appt_date)); 
+            $year = date("Y", strtotime($currentRow->appt_date));
+            $dateTime = $dayOfWeek." ".$month." ".$day.", ".$year." at ".str_pad($currentRow->appt_start_hour, 2, '0', STR_PAD_LEFT).":".str_pad($currentRow->appt_start_minute, 2, '0', STR_PAD_LEFT);
+            $dateTime = str_replace(' ', '%20', $dateTime);
+            $appt_with = str_replace(' ', '%20', $currentRow->appt_with);
+            $date_time_out = $currentRow->appt_date . 'at'. str_pad($currentRow->appt_start_hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad($currentRow->appt_start_minute, 2, '0', STR_PAD_LEFT);
+            $date_time_out = str_replace(' ', '%20', $date_time_out);
+            $baseurl='https://api.tropo.com/1.0/sessions?action=create&token='.$licenseKey;
+            $url= $baseurl . '&numberToDial=1'.$currentRow->phone_number.'&apptwith='.$appt_with.'&datetime='.$dateTime;
+            curl_setopt($cURL,CURLOPT_URL,$url);
+            $result = curl_exec($cURL);
+            sleep(5);
         }         
+        //Close Curl
+        curl_close($cURL);
     }
 }

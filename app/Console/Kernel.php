@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\NotifyOneDaySMS::class,
         \App\Console\Commands\NotifyOneHourSMS::class,
+        \App\Console\Commands\SendEmailNotificationTwoDays::class,
     ];
 
     /**

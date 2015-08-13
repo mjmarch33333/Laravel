@@ -19,7 +19,10 @@
 </p>
     <p class="button-height inline-label">
         <label for="validation-select" class="label">Phone Number</label>
-        <input type="text" name="phone_number" id="input-2" size="9" class="input full-width" value="{{ $users[0]->phone_number }}">
+        <input type="text" name="phone_number" id="input-2" size="9" class="input full-width" value="{{ $users[0]->phone_number }}"><br>
+        <input type="number" min="100" max="999" name="area_code" class="input" id="areaCode" size="3" value="{{ substr($users[0]->phone_number,0,3) }}">
+        <input type="number" min="100" max="999" name="first3" class="input" id="first3" size="3" value="{{ substr($users[0]->phone_number,3,3) }}">
+        <input type="number" min="0" max="9999" name="last4" class="input" id="last4" size="4" value="{{ substr($users[0]->phone_number,6) }}">
 </p>
 
 </p>
@@ -38,7 +41,8 @@
                    Yes
             </label>
             <label for="button-radio-2" class="button green-active">
-                <input type="radio" name="admin_site_id" id="button-radio-2" value="0">                        No
+                <input type="radio" name="admin_site_id" id="button-radio-2" value="0">                        
+                No
             </label>
         @else
             <label for="button-radio-1" class="button green-active">

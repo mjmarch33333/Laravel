@@ -47,7 +47,42 @@ class AdminController extends Controller
         }
         return view('admin.sendSimpleSMS');   
     }
+
     public function sendSimpleSMS()
+    {
+        $admin = \Auth::user()->admin_site_id;
+        if ($admin < 1)
+        {
+             return redirect('home');
+        }
+        $input = Request::all();
+        $phone_number = $input['phone_number'];
+        $message = $input['message'];
+        $message = str_replace(' ', '%20', $message);
+        $licenseKey = env('TROPO_TOKEN');
+        $url='http://sms2.cdyne.com/sms.svc/SimpleSMSsend?PhoneNumber=(' . $phone_number . ')&Message=' . $message . '&LicenseKey=(' . $licenseKey . ')';
+        $baseurl='https://api.tropo.com/1.0/sessions?action=create&token='.$licenseKey;
+        $url= $baseurl . '&numberToDial='.$phone_number.'&apptwith='.$message.'&datetime=20150820';
+        $cURL = curl_init();
+ 
+        curl_setopt($cURL,CURLOPT_URL,$url);
+        curl_setopt($cURL,CURLOPT_HTTPGET,true);
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Accept: application/json'));
+ 
+        $result = curl_exec($cURL);
+ 
+        sleep(5);
+        $url= $baseurl . '&numberToDial='.$phone_number.'&apptwith='.$message.'&datetime=20150821';
+        curl_setopt($cURL,CURLOPT_URL,$url);
+        $result = curl_exec($cURL);
+
+        curl_close($cURL);
+
+        // View the response from CDYNE
+        return $result;
+    }
+
+    public function sendSimpleSMSOLD()
     {
         $admin = \Auth::user()->admin_site_id;
         if ($admin < 1)

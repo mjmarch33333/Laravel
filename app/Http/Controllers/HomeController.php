@@ -31,67 +31,9 @@ class HomeController extends Controller
 
     public function test(Request $request, $id)
     {
-        $hourPlus2 = date('G','5'); 
+        $hourPlus2 = date('Y-m-d', strtotime("+1 day", strtotime(date('Y-m-d'))));
         return $hourPlus2;
   
-    }
-
-    public function sendEmail2hours(Request $request, $id)
-    {
-        $hourPlus2 = date('G')+2; 
-
-        if($hourPlus2>23)
-        {
-            $hourPlus2=$hourPlus2-24;
-            $date = date('Y-m-d', strtotime("+1 day", strtotime(date('Y-m-d'))));
-        } 
-        else
-        {
-            $date = date('Y-m-d');
-        }
-        $sms1day = DB::table('appointments')
-            ->where('appt_date', '=', $date)
-            ->where('sms_1hour', '=', 1)    
-            ->where('appt_start_hour', '=', $hourPlus2)        
-            ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
-            ->get();
-
-        for ($x = 0; $x < count($sms1day); $x++)  
-        {
-            echo $x;
-            echo '<br>';
-            $currentRow=$sms1day[$x];
-            Mail::queue('email.reminder', ['currentRow' => $currentRow], function ($m) use ($currentRow) {
-                $m->to($currentRow->email, $currentRow->name)->subject('Appointment Reminder for ' . $currentRow->name);
-                $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
-            });
-        } 
-
-        return $sms1day;
-    }
-
-    public function sendEmail1Day(Request $request)
-    {
-        $tomorrowDate=date('Y-m-d', strtotime("+1 day", strtotime(date('Y-m-d'))));
-
-        $sms1day = DB::table('appointments')
-            ->where('appt_date', '=', $tomorrowDate)
-            ->where('sms_1day', '=', 1)
-            ->leftJoin('users', 'users.id', '=', 'appointments.user_id')
-            ->get();
-
-        for ($x = 0; $x < count($sms1day); $x++)  
-        {
-            echo $x;
-            echo '<br>';
-            $currentRow=$sms1day[$x];
-            Mail::queue('email.reminder', ['currentRow' => $currentRow], function ($m) use ($currentRow) {
-                $m->to($currentRow->email, $currentRow->name)->subject('Appointment Reminder for ' . $currentRow->name);
-                $m->from('admin@wnyautomation.com', 'WNYAUTOMATION');
-            });
-        } 
-
-        return $sms1day;
     }
 
     /**
