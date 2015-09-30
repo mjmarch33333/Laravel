@@ -15,7 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('home','HomeController@index');
+Route::get('home/pushnotify','HomeController@pushnotify');
 Route::get('test/{id}','HomeController@test');
+Route::get('testbare','HomeController@testbare');
 
 // Appointment Routes
 Route::get('appointments','AppointmentController@index');
