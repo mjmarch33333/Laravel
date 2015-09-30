@@ -7,15 +7,12 @@ body {
 }
 		.maintenance-button {
 			background: #FF0000;
-			height: 45px;
 }
 		.message-button {
 			background: #999
-			height: 55px;
 }
 		.pay-button {
 			background: #444;
-			height: 65px;
 }
 		.full-width {
 			width: 100vw;
@@ -27,7 +24,7 @@ body {
 			margin: 0 0 0 0 !important;
 }
 .h-4 {
-			height: calc(500px / 3);
+			height: calc(1000px / 3);
 }
 .h-5 {
 	height: 60px;
