@@ -10,13 +10,13 @@
 
 	<body>
 		<div class="text-center full-width maintenance-button h-4">
-			<h1>This is a Button</h1>
+			<h1 class="m-0">This is a Button</h1>
 		</div>
-		<div class="text-center full-width message-button h-4">
-			<h1>This is a Button</h1>
+		<div class="text-center full-width message-button h-5">
+			<h1 class="m-0">This is a Button</h1>
 		</div>
-		<div class="text-center full-width pay-button h-4">
-			<h1>This is a Button</h1>
+		<div class="text-center full-width pay-button h-6">
+			<h1 class="m-0">This is a Button</h1>
 		</div>
 	</body>
 
