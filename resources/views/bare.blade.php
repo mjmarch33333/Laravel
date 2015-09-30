@@ -9,7 +9,7 @@
 	<!-- http://www.kylejlarson.com/blog/2012/iphone-5-web-design/ and http://darkforge.blogspot.fr/2010/05/customize-android-browser-scaling-with.html -->
 	<meta name="viewport" content="user-scalable=0, initial-scale=1.0, target-densitydpi=115">
 	<title>TenantSync</title>
-      <link rel="stylesheet" href="http://rootedindezign.com/css/test.css?v=1">
+      <link rel="stylesheet" href="{{ URL::asset('css/test.css') }}">
 </head>
 
 	<body>
