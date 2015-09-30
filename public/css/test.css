@@ -24,7 +24,7 @@ body {
 			margin: 0 0 0 0 !important;
 }
 .h-4 {
-			height: calc(1000px / 3);
+			height: calc(100vh / 3);
 }
 .h-5 {
 	height: 60px;
